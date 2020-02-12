@@ -1,4 +1,5 @@
 from room import Room
+from player import Player
 
 # Declare all the rooms
 
@@ -39,7 +40,7 @@ room['treasure'].s_to = room['narrow']
 
 # Make a new player object that is currently in the 'outside' room.
 
-player = ('amira', 'outside')
+player = Player('amira', 'outside')
 
 # Write a loop that:
 #
@@ -51,3 +52,39 @@ player = ('amira', 'outside')
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+
+
+name = input('Your name here: ')
+current_room = room[player.current_room]
+print(f'Hi! {name}, you are currently in {player.current_room}, {current_room.description}')
+
+
+
+
+while True: 
+    
+    decision = input('Where do you want to go (South, North, East, West)?')
+
+    if decision == 'south' and hasattr(current_room, "s_to"):
+        current_room = current_room.s_to
+        print(current_room)
+
+    elif decision == 'north' and hasattr(current_room, "n_to"):
+        current_room = current_room.n_to
+        print(current_room)
+
+    elif decision == 'west' and hasattr(current_room, "w_to"):
+        current_room = current_room.w_to
+        print(current_room)
+
+    elif decision == 'east' and hasattr(current_room, "e_to"):
+        current_room = current_room.e_to
+        print(current_room)
+    
+    elif decision == 'quit':
+        break
+
+    else: 
+        print('Direction does not exist!')
+    
+    
