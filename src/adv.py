@@ -56,20 +56,21 @@ player = Player('amira', 'outside')
 
 name = input('Your name here: ')
 current_room = room[player.current_room]
-print(f'Hi! {name}, you are currently in {player.current_room}, {current_room.description}')
+print(f'Hi! {name}. You are currently in {player.current_room}, {current_room.description}')
 
 
 
 
 while True: 
     
-    decision = input('Where do you want to go (South, North, East, West)?')
+    decision = input('Where would you like to go (South, North, East, West, Quit)?')
+    decision = decision.lower()
 
-    if decision == 'south' and hasattr(current_room, "s_to"):
+    if decision == 'south'  and hasattr(current_room, "s_to"):
         current_room = current_room.s_to
         print(current_room)
 
-    elif decision == 'north' and hasattr(current_room, "n_to"):
+    elif decision == 'north'  and hasattr(current_room, "n_to"):
         current_room = current_room.n_to
         print(current_room)
 
@@ -82,6 +83,7 @@ while True:
         print(current_room)
     
     elif decision == 'quit':
+        print('Thank you for playing, come back soon!')
         break
 
     else: 
