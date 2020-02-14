@@ -1,5 +1,6 @@
 from room import Room
 from player import Player
+from item import Item
 
 # Declare all the rooms
 
@@ -34,13 +35,21 @@ room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
+item = {
+    'coin': Item("coin", "20 Gold coins"),
+    'sword': Item("sword", "For slaying Ogres")
+}
+
+# add items to rooms
+room['foyer'].add_item_room(item['coin'], item['sword'])
+
 #
 # Main
 #
 
 # Make a new player object that is currently in the 'outside' room.
 
-player = Player('amira', 'outside')
+player = Player(' ', 'outside')
 
 # Write a loop that:
 #
@@ -57,7 +66,7 @@ player = Player('amira', 'outside')
 name = input('Your name here: ')
 current_room = room[player.current_room]
 print(f'Hi! {name}. You are currently in {player.current_room}, {current_room.description}')
-
+print(f"{current_room.view_items_room()}")
 
 
 
@@ -65,6 +74,26 @@ while True:
     
     decision = input('Where would you like to go (South, North, East, West, Quit)?')
     decision = decision.lower()
+
+    action = decision.split(' ')
+
+    if (len(action) > 1) and (action[0] == 'take' or action[0] == 'get'):
+        item = current_room.check_item_room(action[1])
+        if item:
+            print(item.on_take())
+            player.add_item_inventory(item)
+            current_room.remove_item_room(item.name)
+        else:
+            print("\nThis item is not in this room")
+    elif len(action) > 1 and (action[0] == 'drop'):
+        item = player.get_item_name(action[1])
+        if item:
+            print(item.on_drop())
+            player.remove_item_inventory(item.name)
+            current_room.add_item_room(item)
+        else:
+            print("\nThis item is not in your inventory")
+    else:
 
     if decision == 'south'  and hasattr(current_room, "s_to"):
         current_room = current_room.s_to
